@@ -1,0 +1,132 @@
+﻿@model MyExplorer.Controllers.FileViewModel
+
+<div class="container" style="margin: 20px;">
+    <div class="row">
+        <div class="col-4">
+            <label class="h5 text-center" for="inputPath">Path to the selected folder</label>
+        </div>
+        <!-- Ввод нового пути -->
+        <div class="col-6">
+            <input type="text" class="form-control" id="inputPath" style="width: 100%;" placeholder="C:\ProgramData\Atom" aria-describedby="inputGroup-sizing-default" value="@ViewData["MyPath"]">
+        </div>
+        <!-- Открыть новый путь -->
+        <div class="col-1">
+            <button type="button" onclick="SetNewPath()" class="btn btn-outline-primary">Apply</button>
+        </div>
+        <!-- Вернуться назад -->
+        <div class="col-1">
+            <button type="button" onclick="ToBack()" class="btn btn-outline-dark" >Back</button>
+        </div>
+        
+    </div>
+
+    <div class="row pt-4" style="overflow: auto;">
+        <div class="col-6" style="overflow: auto;">
+            <!-- Рекурсивно строиться дерево -->
+             <div id="myUL" class="tree">
+                @Html.Raw(RenderTree(Model))
+            </div>
+        </div>
+        <div class="col-6" style="overflow: auto;">
+            <!-- Отображение дочерних файлов -->
+            @foreach(var item in Model.Children.OrderByDescending(x => x.Size))
+            {
+                if(item.IsDirectory) {
+                    <!-- Если элемент папка -->
+                    <img src="/img/folder.png" width="20" height="20">
+                    if(item.Children.Count() > 0) 
+                        @Html.ActionLink(item.Name, "Index", "Home", new{ path = item.Path})
+                    else
+                        @Html.Raw(item.Name)
+                    <!-- Размер папки -->
+                    @Html.Raw(" (" + Math.Round(item.Size, 2) + " Кб)")
+                }
+                else {
+                    <!-- Если это файл -->
+                    <img src="/img/files.png" width="20" height="20">
+                    <!-- Размер файла -->
+                    @Html.Raw(item.Name + " (" + Math.Round(item.Size, 2) + " Кб)")
+                }     
+                <br>
+            }
+        </div>
+    </div>
+</div>
+
+ 
+
+@functions {
+    string RenderTree(MyExplorer.Controllers.FileViewModel file)
+    {
+        var result = "";
+        result += "<ul>";
+
+        // Render the current file
+        result += "<li>";
+        result += RenderFile(file);
+
+        // Render children recursively
+        if (file.Children.Any())
+        {
+            result += "<ul class=\"nested\">";
+
+            foreach (var child in file.Children)
+            {
+                result += "<li>";
+                result += RenderTree(child);
+                result += "</li>";
+            }
+
+            result += "</ul>";
+        }
+
+        result += "</li>";
+        result += "</ul>";
+
+        return result;
+    }
+
+    string RenderFile(MyExplorer.Controllers.FileViewModel file)
+    {
+        var result = "";
+        if (file.Path != null)
+        {            
+            var img = file.IsDirectory ? "<img src=\"/img/folder.png\" width=\"20\" height=\"20\">" : "<img src=\"/img/files.png\" width=\"20\" height=\"20\">";
+
+            if (file.Children.Any())
+            {
+                result += $"<span class=\"box\"><a href='/Home/Index?path={ file.Path }'>{ img + " " + file.Name }</a></span>";
+            }
+            else
+            {
+                result += img + " " + file.Name;
+            }
+        }
+        return result;
+    }
+}
+<script>
+    var toggler = document.getElementsByClassName("box");
+    var i;
+
+    for (i = 0; i < toggler.length; i++) {
+      toggler[i].addEventListener("click", function() {
+        this.parentElement.querySelector(".nested").classList.toggle("active");
+        this.classList.toggle("check-box");
+      });
+    }
+ 
+    document.querySelector('.nested').classList.add('active');
+    document.querySelector('.box').classList.add('check-box');
+ 
+    // Открытие нового пути
+    function SetNewPath() {
+        
+        if (document.getElementById("inputPath").value !== "") {
+            window.location.href = "/Home/Index/?path=" + document.getElementById("inputPath").value;
+        }        
+    };  
+    // Переместиться на уровень назад
+    function ToBack() { history.back(); }; 
+    
+</script>

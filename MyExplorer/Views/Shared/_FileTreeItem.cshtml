@@ -1,0 +1,13 @@
+﻿@model MyExplorer.Controllers.FileViewModel
+
+<div>
+    <h4>@Model.Name</h4>
+    <ul>
+        @foreach (var child in Model.Children)
+        {
+            <li>
+                @Html.Partial("_FileTreeItem", child)
+            </li>
+        }
+    </ul>
+</div>
