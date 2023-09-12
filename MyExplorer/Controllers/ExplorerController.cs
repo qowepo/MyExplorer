@@ -8,11 +8,11 @@ using System.IO;
 
 namespace MyExplorer.Controllers
 {
-	public class HomeController : Controller
+	public class ExplorerController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
+		private readonly ILogger<ExplorerController> _logger;
 
-		public HomeController(ILogger<HomeController> logger)
+		public ExplorerController(ILogger<ExplorerController> logger)
 		{
 			_logger = logger;
 		}
@@ -48,7 +48,7 @@ namespace MyExplorer.Controllers
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
 
-		static FileViewModel GetFileViewModel(FileSystemInfo fileSystemInfo)
+		private FileViewModel GetFileViewModel(FileSystemInfo fileSystemInfo)
 		{
 			FileViewModel fileViewModel = new FileViewModel();
 			fileViewModel.Name = fileSystemInfo.Name;
@@ -79,19 +79,5 @@ namespace MyExplorer.Controllers
 			fileViewModel.Size = directorySize;
 			return fileViewModel;
 		}
-	}
-
-	public class FileViewModel
-	{
-		public string Name { get; set; }
-		public string Path { get; set; }
-		public bool IsDirectory { get; set; }
-		public double Size { get; set; }	
-		public List<FileViewModel> Children { get; set; }
-
-		public FileViewModel()
-		{
-			Children = new List<FileViewModel>();
-		}
-	}
+	}	
 }

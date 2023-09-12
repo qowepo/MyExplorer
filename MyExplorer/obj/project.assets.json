@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nikul\\source\\repos\\MyExplorer\\MyExplorer\\MyExplorer.csproj",
+      "projectUniqueName": "C:\\Users\\nikul\\OneDrive\\Документы\\GitHub\\MyExplorer\\MyExplorer\\MyExplorer.csproj",
       "projectName": "MyExplorer",
-      "projectPath": "C:\\Users\\nikul\\source\\repos\\MyExplorer\\MyExplorer\\MyExplorer.csproj",
+      "projectPath": "C:\\Users\\nikul\\OneDrive\\Документы\\GitHub\\MyExplorer\\MyExplorer\\MyExplorer.csproj",
       "packagesPath": "C:\\Users\\nikul\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nikul\\source\\repos\\MyExplorer\\MyExplorer\\obj\\",
+      "outputPath": "C:\\Users\\nikul\\OneDrive\\Документы\\GitHub\\MyExplorer\\MyExplorer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

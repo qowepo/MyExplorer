@@ -1,4 +1,4 @@
-﻿@model MyExplorer.Controllers.FileViewModel
+﻿@model MyExplorer.Models.FileViewModel
 
 <div class="container" style="margin: 20px;">
     <div class="row">
@@ -35,7 +35,7 @@
                     <!-- Если элемент папка -->
                     <img src="/img/folder.png" width="20" height="20">
                     if(item.Children.Count() > 0) 
-                        @Html.ActionLink(item.Name, "Index", "Home", new{ path = item.Path})
+                        @Html.ActionLink(item.Name, "Index", "Explorer", new{ path = item.Path})
                     else
                         @Html.Raw(item.Name)
                     <!-- Размер папки -->
@@ -56,7 +56,7 @@
  
 
 @functions {
-    string RenderTree(MyExplorer.Controllers.FileViewModel file)
+    string RenderTree(MyExplorer.Models.FileViewModel file)
     {
         var result = "";
         result += "<ul>";
@@ -86,7 +86,7 @@
         return result;
     }
 
-    string RenderFile(MyExplorer.Controllers.FileViewModel file)
+    string RenderFile(MyExplorer.Models.FileViewModel file)
     {
         var result = "";
         if (file.Path != null)
@@ -95,7 +95,7 @@
 
             if (file.Children.Any())
             {
-                result += $"<span class=\"box\"><a href='/Home/Index?path={ file.Path }'>{ img + " " + file.Name }</a></span>";
+                result += $"<span class=\"box\"><a href='/Explorer/Index?path={ file.Path }'>{ img + " " + file.Name }</a></span>";
             }
             else
             {
@@ -116,14 +116,19 @@
       });
     }
  
-    document.querySelector('.nested').classList.add('active');
-    document.querySelector('.box').classList.add('check-box');
+    const nestedElement = document.querySelector('.nested');
+    const boxElement = document.querySelector('.box');
+
+    if (nestedElement && boxElement) {
+      nestedElement.classList.add('active');
+      boxElement.classList.add('check-box');
+    }
  
     // Открытие нового пути
     function SetNewPath() {
         
         if (document.getElementById("inputPath").value !== "") {
-            window.location.href = "/Home/Index/?path=" + document.getElementById("inputPath").value;
+            window.location.href = "/Explorer/Index/?path=" + document.getElementById("inputPath").value;
         }        
     };  
     // Переместиться на уровень назад
